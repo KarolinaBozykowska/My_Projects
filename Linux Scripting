@@ -1,0 +1,412 @@
+1. Create a simple shell script to tell the user about their session – they need to know:
+What their username is
+What the current date is
+What the time is
+What their current working directory is
+How many files they have in that directory
+What is the biggest file in their current directory
+
+#!/bin/sh
+
+echo "Your username is:" $USER
+echo "The current date is:" $( date +'%Y/%m/%d')
+echo "The current time is:" $(date +'%r')
+echo "Your current directory is:" `pwd`
+echo "You have `ls | wc -l` files in your directory"
+echo "The biggest file in your directory is:" `find -type f -printf "%s\t%p\n" | sort -n | tail -1`
+
+2. Create a directory with a few test files in it (the files can be empty). Now write a script that for every file in that directory you rename it to have an extension of today's date in YYYYMMDD format.
+
+#!/bin/sh
+
+DAY=$(date +%d%m%Y)
+for FILE in *
+ do
+    mv $FILE ${FILE}-${DAY}
+ done
+ 
+ 3. You are in charge of creating a program for the lottery in your area! The options are for numbers between 1and 50. Create a script that picks 5 for each draw plus a bonus ball number between 1 and 10. Output the numbers to a file that has the date in its name. Create another script that will allow users to check their lottery numbers and advise them if they match or not and how many matches they got.
+ 
+ #!/bin/sh
+
+shuf -i 1-50 -n5 > lottery
+shuf -i 1-10 -n1 >> lottery
+
+array=(1 2 3 4 5)
+ 
+echo "Enter your 5 lottery numbers: "
+read number 
+i=0
+count=0
+while [ $i -eq 5 ]
+do
+curr=${array[$i]}
+if [ $curr == n ]
+then
+count=`expr $count + 1`
+fi
+i=`expr $i + 1`
+done
+
+echo number of matches: $count
+echo "your numbers:" $number
+echo "lottery numbers:" `cat lottery`
+diff lottery number
+echo $(date +"%c") : $count >> lottery.txt
+
+4. Write a script to validate how secure someone's password is. Things you would care about:
+Length should be 8 or more characters
+The password should contain numbers and letters
+There should be both uppercase and lowercase letters
+
+#!/bin/sh
+
+echo "enter the password"
+read password
+len="${#password}"
+if test $len -ge 8 ; then
+echo "$password" | grep -q [0-9]
+if test $? -eq 0 ; then
+echo "$password" | grep -q [A-Z]
+if test $? -eq 0 ; then
+echo "$password" | grep -q [a-z]   
+if test $? -eq 0 ; then
+echo "Strong password"
+else
+echo "weak password include lower case char"
+fi
+else
+echo "weak password include capital char"
+fi
+else
+echo "please include the numbers in password it is weak password"   
+fi
+else
+echo "password lenght should be greater than or equal 8 hence weak password"
+fi
+
+5. Write a script that takes a number as an input and reverses it out to the user. For example, if the original number is 74985, the output should be 58947.
+
+#!/bin/sh
+
+
+read line 
+input=$line
+
+reverse=""
+ 
+len=${#input}
+for (( i=$len-1; i>=0; i-- ))
+do 
+	reverse="$reverse${input:$i:1}"
+done
+ 
+echo "Input (original): $input"
+echo "Output (rev): $reverse"
+
+6. Create a script that takes two number parameters a and b and then shows True if a is larger than b or False otherwise.
+Create a second version of the script that then tells the user the difference between the two numbers.
+
+#!/bin/sh
+
+
+echo "Find if a is larger than b"
+echo "Enter a value: "
+read a
+
+echo "Enter b value: "
+read b
+
+if [[ $a =~ ^[+-]?[0-9]+$ ]]
+then
+        if [[ $b =~ ^[+-]?[0-9]+$ ]]
+        then
+            if [ $a -gt $b ]
+                then
+                     echo "True"
+                else
+                     echo "False"
+                fi
+        else
+                echo "Enter B as integer"
+        fi
+
+else
+        echo "Enter A as integer"
+fi
+
+#!/bin/sh
+
+echo "Find if a is larger than b"
+
+echo "Enter a value: "
+read a
+
+echo "Enter b value: "
+read b
+
+if [[ $a =~ ^[+-]?[0-9]+$ ]]
+then
+        if [[ $b =~ ^[+-]?[0-9]+$ ]]
+        then
+                echo "Difference is " $(( a - b ))
+        else
+                echo "Enter B as integer"
+        fi
+
+else
+        echo "Enter A as integer"
+fi
+
+7. Create a 10-question true or false quiz game in your script. Choose a topic of your liking for the questions!
+
+#!/bin/sh
+
+
+echo "Welcome to 10-questions quiz and Good Luck!"
+echo "Question1: Paris is the capital of France" "T/F?"
+read a
+correctanswer=T
+
+if [ ${a^^} = ${correctanswer^^} ]
+then 
+	echo "Correct answer"
+else
+	echo "Wrong answer"
+fi
+
+echo "Question2: Berlin is the capital of Germany" "T/F?"
+read a
+correctanswer=T
+if [ ${a^^} = ${correctanswer^^} ]
+then
+        echo "Correct answer"
+else
+        echo "Wrong answer"
+fi
+
+echo "Question3: Gdansk is the capital of Poland" "T/F?"
+read a
+correctanswer=F
+if [ ${a^^} = ${correctanswer^^} ]
+then
+        echo "Correct answer"
+else
+        echo "Wrong answer"
+fi
+
+echo "Question4: Tokio is the capital of Japan" "T/F?"
+read a
+correctanswer=T
+if [ ${a^^} = ${correctanswer^^} ]
+then
+        echo "Correct answer"
+else
+        echo "Wrong answer"
+fi
+
+
+echo "Question5: Sydney is the capital of Australia" "T/F?"
+correctanswer=F
+read a
+if [ ${a^^} = ${correctanswer^^} ]
+then
+        echo "Correct answer"
+else
+        echo "Wrong answer"
+fi
+
+
+echo "Question6: Auckland is the capital of New Zealand" "T/F?"
+correctanswer=F
+read a
+if [ ${a^^} = ${correctanswer^^} ]
+then
+        echo "Correct answer"
+else
+        echo "Wrong answer"
+fi
+
+echo "Question7: Tbilisi is the capital of Georgia" "T/F?"
+correctanswer=T
+read a
+if [ ${a^^} = ${correctanswer^^} ]
+then
+        echo "Correct answer"
+else
+        echo "Wrong answer"
+fi
+
+
+echo "Question8: Barcelona is the capital of Spain" "T/F?"
+correctanswer=F
+read a
+if [ ${a^^} = ${correctanswer^^} ]
+then
+        echo "Correct answer"
+else
+        echo "Wrong answer"
+fi
+
+
+echo "Question9: Lisbona is the capital of Madeira" "T/F?"
+correctanswer=F
+read a
+if [ ${a^^} = ${correctanswer^^} ]
+then
+        echo "Correct answer"
+else
+        echo "Wrong answer"
+fi
+
+
+echo "Question10: Amsterdam is the capital of Netherlands" "T/F?"
+correctanswer=T
+read a
+if [ ${a^^} = ${correctanswer^^} ]
+then
+        echo "Correct answer"
+else
+        echo "Wrong answer"
+fi
+
+8. Create a script that completes the following tasks:
+It prompts the user for a series of 5-10 integers.
+The user must be prompted for a minimum of 5 numbers.
+After the user has entered 5 numbers, the program should allow the user to stop entry or enter another number.
+When the user chooses to stop or after 10 numbers have been entered, the program stops prompting for values and performs the following calculations:
+the product of the integers
+the average of the integers
+the sum of the integers
+the min of the integers
+the max of the integers
+After performing the calculations, the program should display the following to the user:
+the values the user entered
+each of the calculations, using a phrase that identifies the value
+
+#!/bin/sh
+
+min=99999
+max=-9999
+sum=0
+pro=1
+avg=0
+choice=y
+
+
+echo "enter 5 numbers:"
+for((i=0;i<10;i++))
+do
+
+if [ $i -gt 4 ]
+then
+
+echo "enter" $(($i+1))"th number: y/n"
+read choice
+
+if [ $choice = 'n' ]
+then
+break
+fi
+fi
+
+read m
+
+#adding to array
+a[i]=$m
+
+sum=$(($sum+$m))
+
+if [ $m -gt $max ]
+then
+max=$m
+fi
+
+if [ $m -lt $min ]
+then
+min=$m
+fi
+
+pro=$(($pro*$m))
+done
+
+avg=$(($sum/$i))
+
+echo "numbers entered by user:" ${a[@]}
+echo "sum:" $sum
+echo "min:" $min
+echo "max:" $max
+echo "product:" $pro
+echo "avg:" $avg
+
+9. Write a script that takes a file name as a parameter.
+If the file exists, print an error and return a code.
+If the file does not exist, create the file.
+
+#!/bin/bash
+
+echo "Enter the file name: "
+read name
+
+if [ ! -d $name ]
+then
+	echo `touch $name`
+	echo "$name has been created."
+
+else
+	echo "Sorry, $name has already exist."
+
+fi
+
+10. Write a script that writes random numbers to a file (one number per line).
+The first parameter should be the file name.
+The second parameter is the number of lines to write.
+If the specified file already exists, display a relevant message and return a code.
+
+#!/bin/sh
+
+echo "Type filename"
+read filename 
+echo "How many lines you need in your file?"
+read numberoflines
+if [[ -f "$filename" ]]; then
+echo "$filename exist try with different file name"
+else
+for ((i=0;i<"$numberoflines";i++))
+do
+echo $RANDOM >> $filename
+done
+fi
+
+11. Create a file that includes the following numbers: 5 6 3 7 4 4 9 6 7 9 8 2 3 6 4 5 1 1 3 10 12
+Write a script that uses this file to perform the following tasks:
+Read in the file
+Sort the numbers into reverse order and output them to the screen
+Each number should output exactly once. Duplicate numbers should not appear in the output.
+
+#!/bin/sh
+
+cat numbers.txt
+echo "Output with your numbers sorted in reverse order without duplicates is:"
+echo `sort -nur numbers.txt`
+
+12. Write a script that checks if two files have at least one common element or not. Display an appropriate message for both scenarios. The file names should be specified as parameters. You will need to create the files to test this.
+
+#!/bin/sh
+
+read file1
+read file2
+
+if diff "$file1" "$file2"; then
+            printf 'The file "%s" is the same as "%s"\n' "$file1" "$file2"
+	   else 
+		 printf 'The file "%s" is not the same as "%s"\n' "$file1" "$file2"
+        fi
+        
+13. Write a script that takes two files of unique numbers and displays the difference between the two lists (without using grep).
+For example:
+File 1 contains: 1 2 4 6
+File 2 contains: 1 2 89 6 7
+The output should look like:
+Only in file 1: 4
+Only in file 2: 89 7
