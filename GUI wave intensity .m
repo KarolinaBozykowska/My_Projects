@@ -1,30 +1,7 @@
 function varargout = gui(varargin)
 %GUI MATLAB code file for gui.fig
-%      GUI, by itself, creates a new GUI or raises the existing
-%      singleton*.
-%
-%      H = GUI returns the handle to a new GUI or the handle to
-%      the existing singleton*.
-%
-%      GUI('Property','Value',...) creates a new GUI using the
-%      given property value pairs. Unrecognized properties are passed via
-%      varargin to gui_OpeningFcn.  This calling syntax produces a
-%      warning when there is an existing singleton*.
-%
-%      GUI('CALLBACK') and GUI('CALLBACK',hObject,...) call the
-%      local function named CALLBACK in GUI.M with the given input
-%      arguments.
-%
-%      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
-%      instance to run (singleton)".
-%
-% See also: GUIDE, GUIDATA, GUIHANDLES
-
-% Edit the above text to modify the response to help gui
-
 % Last Modified by GUIDE v2.5 10-Apr-2021 18:35:16
 
-% Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
 gui_State = struct('gui_Name',       mfilename, ...
                    'gui_Singleton',  gui_Singleton, ...
