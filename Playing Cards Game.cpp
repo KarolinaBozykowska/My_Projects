@@ -1,4 +1,3 @@
-// POP 2015-12-17 projekt 1 Bozykowska Karolina EiT 1 160279
 // Code::Blocks 13.12 GNU CPP Compiler
 
 #include <cstdlib>
